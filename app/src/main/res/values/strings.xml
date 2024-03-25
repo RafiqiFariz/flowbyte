@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">flowbyte</string>
+    <string name="app_name">Flowbyte</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_library">Library</string>
+    <string name="song_title">Dummy Title</string>
+    <string name="song_lyrics_title">Lyrics</string>
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae ducimus iusto minima molestias neque placeat quae qui tempora. Aliquid architecto asperiores aut beatae deleniti distinctio dolore dolorum ducimus eaque eos exercitationem fugiat hic ipsa ipsum itaque iusto labore maxime mollitia nihil non nostrum obcaecati officia pariatur perspiciatis possimus quae quas quia, quibusdam quisquam repudiandae saepe similique sunt tenetur, unde ut veritatis voluptatibus. Ex laborum omnis optio provident reprehenderit tempora ullam? Ad consequatur impedit nam odio recusandae reprehenderit sunt vel! Nesciunt, nihil, quod. Autem consectetur corporis cumque cupiditate earum error fuga laborum, non odio provident quasi quidem repudiandae sint totam ullam?
+    </string>
 </resources>
