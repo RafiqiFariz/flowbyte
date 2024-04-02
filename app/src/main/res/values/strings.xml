@@ -8,4 +8,18 @@
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae ducimus iusto minima molestias neque placeat quae qui tempora. Aliquid architecto asperiores aut beatae deleniti distinctio dolore dolorum ducimus eaque eos exercitationem fugiat hic ipsa ipsum itaque iusto labore maxime mollitia nihil non nostrum obcaecati officia pariatur perspiciatis possimus quae quas quia, quibusdam quisquam repudiandae saepe similique sunt tenetur, unde ut veritatis voluptatibus. Ex laborum omnis optio provident reprehenderit tempora ullam? Ad consequatur impedit nam odio recusandae reprehenderit sunt vel! Nesciunt, nihil, quod. Autem consectetur corporis cumque cupiditate earum error fuga laborum, non odio provident quasi quidem repudiandae sint totam ullam?
     </string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
