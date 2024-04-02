@@ -29,15 +29,9 @@ class LibraryFragment : Fragment() {
         val root: View = binding.root
 
 //        val textView: TextView = binding.textNotifications
-<<<<<<< HEAD
-//        libraryViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-=======
         libraryViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it
         }
->>>>>>> b18be0e2927b097b78f7b8e61155a673b12ec053
         return root
     }
 
