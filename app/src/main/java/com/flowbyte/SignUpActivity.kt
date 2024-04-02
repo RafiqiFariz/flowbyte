@@ -20,8 +20,8 @@ class SignUpActivity : AppCompatActivity() {
 
         val registerBtn = findViewById<Button>(R.id.buttonRegister)
         registerBtn.setOnClickListener{
-            val intent = Intent(this, HomeFragment::class.java)
-            startActivity(intent)
+            val intentHome = Intent(this, MainActivity::class.java)
+            startActivity(intentHome)
         }
     }
 }
