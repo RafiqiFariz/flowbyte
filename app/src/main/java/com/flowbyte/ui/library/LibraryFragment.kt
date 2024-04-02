@@ -28,9 +28,9 @@ class LibraryFragment : Fragment() {
         _binding = FragmentLibraryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
+//        val textView: TextView = binding.textNotifications
         libraryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+//            textView.text = it
         }
         return root
     }
