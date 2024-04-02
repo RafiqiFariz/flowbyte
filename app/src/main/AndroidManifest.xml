@@ -13,16 +13,16 @@
         android:theme="@style/Theme.Flowbyte"
         tools:targetApi="31">
         <activity
-            android:name=".gettingstarted"
+            android:name=".GettingStartedActivity"
             android:exported="true" />
-        <activity
-            android:name=".Splashscreen"
-            android:exported="true" />
+<!--        <activity-->
+<!--            android:name=".Splashscreen"-->
+<!--            android:exported="true" />-->
         <activity
             android:name=".ui.song.SongActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashScreenActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -30,6 +30,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
         </activity>
     </application>
 
