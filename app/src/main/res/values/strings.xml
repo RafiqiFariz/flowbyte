@@ -23,4 +23,10 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="getting_started">getting started</string>
+    <string name="the_weeeknd">the weeeknd</string>
+    <string name="the_weeknd">the weeknd</string>
+    <string name="ariana_grande">Ariana Grande</string>
+    <string name="lorum_ipsum_dolor">lorum ipsum dolor</string>
+    <string name="the_weeekndw">The Weeeknd</string>
+    <string name="after_hoursby_the_weeknd_is_a_highly_anticipated">After Hoursby The Weeknd is a highly anticipated...</string>
 </resources>
