@@ -11,7 +11,7 @@ class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-
+        supportActionBar?.hide()
         val textViewSignUp = findViewById<TextView>(R.id.login)
         textViewSignUp.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)

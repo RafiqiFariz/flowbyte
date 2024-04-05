@@ -9,7 +9,7 @@ class GettingStartedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gettingstarted)
-
+        supportActionBar?.hide()
         val btnGettingStart = findViewById<Button>(R.id.buttonGettingStarted)
         btnGettingStart.setOnClickListener {
             val intentLogin = Intent(this, LoginActivity::class.java)
