@@ -13,5 +13,18 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/centurygothic</item>
+
     </style>
+    <style name="RoundedSquare">
+        <item name="cornerSize">5dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="RoundedCorners">
+        <item name="cornerSizeTopLeft">3dp</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerSizeBottomLeft">3dp</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+    </style>
+
 </resources>
