@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomButtonStyle" parent="Widget.MaterialComponents.Button">
+        <!-- Customize button background color -->
+        <item name="android:background">@drawable/btn_nav_library</item>
+        <item name="android:backgroundTint">#FFFFFF</item>
+        <!-- Customize button text color -->
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+</resources>

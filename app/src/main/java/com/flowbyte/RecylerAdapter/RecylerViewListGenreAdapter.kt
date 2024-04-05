@@ -1,4 +1,4 @@
-package com.flowbyte
+package com.flowbyte.RecylerAdapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +9,21 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.flowbyte.R
+import com.flowbyte.data.ListGenre
 
 class RecyclerViewListGenreAdapter(private val getSpecificFragment: () -> Fragment, private val ListGenre: List<ListGenre>) : RecyclerView.Adapter<RecyclerViewListGenreAdapter.MyViewHolder>() {
     // Adapter implementation here
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerViewListGenreAdapter.MyViewHolder {
+    ): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_card_components, parent, false)
 
         return MyViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerViewListGenreAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.GenreListTitle.text = ListGenre[position].title
         holder.GenreListImg.setImageResource(ListGenre[position].image)
 
