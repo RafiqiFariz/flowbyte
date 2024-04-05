@@ -1,5 +1,6 @@
 package com.flowbyte.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.flowbyte.R
 import com.flowbyte.databinding.FragmentHomeBinding
+import com.flowbyte.ui.song.SongActivity
 
 class HomeFragment : Fragment() {
 
@@ -32,7 +35,23 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it
         }
+
+        // Find the card view by its id
+        val cardView1 = root.findViewById<View>(R.id.cardView)
+
+        // Set click listener on card view
+        cardView1.setOnClickListener {
+            moveToNewActivity()
+        }
+
         return root
+
+
+    }
+
+    private fun moveToNewActivity() {
+        val intent = Intent(requireActivity(), SongActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
