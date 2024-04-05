@@ -35,23 +35,14 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it
         }
-
-        // Find the card view by its id
-        val cardView1 = root.findViewById<View>(R.id.cardView)
-
-        // Set click listener on card view
-        cardView1.setOnClickListener {
-            moveToNewActivity()
+        binding.cardView1.setOnClickListener {
+            val intent = Intent(this.requireContext(), SongActivity::class.java)
+            startActivity(intent)
         }
 
         return root
 
 
-    }
-
-    private fun moveToNewActivity() {
-        val intent = Intent(requireActivity(), SongActivity::class.java)
-        startActivity(intent)
     }
 
     override fun onDestroyView() {
