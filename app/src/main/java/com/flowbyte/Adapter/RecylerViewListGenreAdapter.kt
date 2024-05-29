@@ -1,4 +1,4 @@
-package com.flowbyte.RecylerAdapter
+package com.flowbyte.Adapter
 
 import android.view.LayoutInflater
 import android.view.View
