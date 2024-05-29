@@ -1,4 +1,4 @@
-package com.flowbyte.Adapter
+package com.flowbyte.adapter
 
 import android.view.LayoutInflater
 import android.view.View

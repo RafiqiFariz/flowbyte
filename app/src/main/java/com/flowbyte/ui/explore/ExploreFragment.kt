@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.flowbyte.data.ListGenre
 import com.flowbyte.R
-import com.flowbyte.Adapter.RecyclerViewListGenreAdapter
+import com.flowbyte.adapter.RecyclerViewListGenreAdapter
 import com.flowbyte.databinding.FragmentExploreBinding
 
 class ExploreFragment : Fragment() {
