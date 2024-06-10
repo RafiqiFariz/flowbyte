@@ -39,29 +39,29 @@
             android:textAlignment="center"
             android:textColor="@color/white"/>
 
-        <EditText
-            android:id="@+id/editTextUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title_text"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/custom_input"
-            android:drawableStart="@drawable/custom_email_icon"
-            android:drawablePadding="12dp"
-            android:hint="Username"
-            android:textColorHint="@color/dark_gray"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+<!--        <EditText-->
+<!--            android:id="@+id/editTextUsername"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/title_text"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginEnd="24dp"-->
+<!--            android:background="@drawable/custom_input"-->
+<!--            android:drawableStart="@drawable/custom_email_icon"-->
+<!--            android:drawablePadding="12dp"-->
+<!--            android:hint="Username"-->
+<!--            android:textColorHint="@color/dark_gray"-->
+<!--            android:inputType="textEmailAddress"-->
+<!--            android:padding="12dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="16sp" />-->
 
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextUsername"
+            android:layout_below="@id/title_text"
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="24dp"
