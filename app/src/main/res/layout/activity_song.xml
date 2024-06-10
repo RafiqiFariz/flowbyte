@@ -78,14 +78,23 @@
             </LinearLayout>
         </LinearLayout>
 
-        <androidx.media3.ui.PlayerView
+        <androidx.media3.ui.PlayerControlView
             android:id="@+id/playerControlView"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:controller_layout_id="@layout/custom_controls"
+            app:hide_on_touch="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            app:repeat_toggle_modes="one"
+            app:show_next_button="true"
+            app:show_previous_button="true"
+            app:show_shuffle_button="true"
+            app:show_timeout="0"
+            app:shutter_background_color="@android:color/transparent"
+            app:use_artwork="false" />
 
         <TextView
             android:id="@+id/lyricsTitle"
