@@ -7,13 +7,15 @@
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
     android:layout_height="wrap_content">
+
     <Button
         android:id="@+id/buttonNavLibrary"
+        style="@style/CustomButtonStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="32dp"
         android:text="Login"
-        style="@style/CustomButtonStyle" />
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

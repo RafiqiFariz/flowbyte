@@ -39,11 +39,103 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recylerNavLibrary"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="32dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/firstLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/btn_add_new_playlist"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/recylerNavLibrary"
+        app:layout_constraintStart_toStartOf="parent">
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_background"
+                android:text=""
+                android:textColor="#FFFFFF" />
+
+            <ImageView
+                android:id="@+id/ic_add"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_add"
+                android:layout_gravity="center"
+                android:contentDescription="add" />
+        </FrameLayout>
+        <TextView
+            android:id="@+id/text_add_new_playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add new Playlist"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/gothic"
+            android:textFontWeight="600"
+            android:lineSpacingExtra="36sp"
+            android:layout_gravity="center_vertical"
+            android:letterSpacing=".1" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_your_liked_songs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_new_playlist"
+        app:layout_constraintStart_toStartOf="parent">
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_background"
+                android:text=""
+                android:textColor="#FFFFFF" />
+
+            <ImageView
+                android:id="@+id/ic_heart"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_heart"
+                android:layout_gravity="center"
+                android:contentDescription="add" />
+        </FrameLayout>
+        <TextView
+            android:id="@+id/text_your_liked_songs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your liked Songs"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/gothic"
+            android:textFontWeight="600"
+            android:lineSpacingExtra="36sp"
+            android:layout_gravity="center_vertical"
+            android:letterSpacing=".1" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recylerPlaylist"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_your_liked_songs"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstLinearLayout" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
