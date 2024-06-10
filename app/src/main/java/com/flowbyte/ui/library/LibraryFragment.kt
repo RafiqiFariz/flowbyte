@@ -25,7 +25,7 @@ class LibraryFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        (requireActivity() as AppCompatActivity?)?.supportActionBar?.hide()
+//        (requireActivity() as AppCompatActivity?)?.supportActionBar?.show()
         val libraryViewModel =
                 ViewModelProvider(this).get(LibraryViewModel::class.java)
 
