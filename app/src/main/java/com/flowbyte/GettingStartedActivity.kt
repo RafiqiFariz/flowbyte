@@ -49,8 +49,8 @@ class GettingStartedActivity : AppCompatActivity() {
 
         val btnGettingStart = findViewById<Button>(R.id.buttonGettingStarted)
         btnGettingStart.setOnClickListener {
-            val intentLogin = Intent(this, LoginActivity::class.java)
-//            val intentLogin = Intent(this, MainActivity::class.java) // utk bypass
+//            val intentLogin = Intent(this, LoginActivity::class.java)
+            val intentLogin = Intent(this, MainActivity::class.java) // utk bypass
             startActivity(intentLogin)
         }
     }

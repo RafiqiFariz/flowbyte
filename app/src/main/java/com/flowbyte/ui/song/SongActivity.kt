@@ -1,66 +1,54 @@
 package com.flowbyte.ui.song
 
-import android.content.ContentResolver
-import android.net.Uri
+import android.content.ComponentName
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.OptIn
-import androidx.media3.common.AudioAttributes
-import androidx.media3.common.MediaItem
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
-import com.flowbyte.R
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import com.flowbyte.databinding.ActivitySongBinding
+import com.flowbyte.service.PlaybackService
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.MoreExecutors
 
 class SongActivity : AppCompatActivity() {
-    private var _binding: ActivitySongBinding? = null
-    private lateinit var _player: ExoPlayer
+    private lateinit var _binding: ActivitySongBinding
+    private lateinit var _controllerFuture: ListenableFuture<MediaController>
 
     @OptIn(UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySongBinding.inflate(layoutInflater)
-        setContentView(_binding?.root)
-
-        _player = ExoPlayer.Builder(this)
-            .setAudioAttributes(AudioAttributes.DEFAULT, true)
-            .build()
-        _binding?.playerControlView?.player = _player
-
-//        val mediaItem = MediaItem.fromUri("https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/000/936/royalty-1619082033-7RC2AlRdd1.mp3")
-        val dummyMusic = Uri.Builder()
-            .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-            .authority(packageName)
-            .path(R.raw.royalty.toString())
-            .build()
-        val mediaItem = MediaItem.fromUri(dummyMusic)
-        _player.setMediaItem(mediaItem)
-        _player.prepare()
-        _player.play()
-
-        _player.addListener(object : Player.Listener {
-            override fun onPlayerError(error: PlaybackException) {
-                Toast.makeText(applicationContext, "Error playing media", Toast.LENGTH_SHORT).show()
-                super.onPlayerError(error)
-            }
-        })
+        setContentView(_binding.root)
+        hideSystemUI()
     }
-
+    
+    @OptIn(UnstableApi::class)
     override fun onStart() {
         super.onStart()
-        _player.playWhenReady = true
+        val sessionToken = SessionToken(this, ComponentName(this, PlaybackService::class.java))
+        _controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
+        _controllerFuture.addListener(
+            { _binding.playerControlView.player = _controllerFuture.get() },
+            MoreExecutors.directExecutor()
+        )
     }
 
     override fun onStop() {
         super.onStop()
-        _player.playWhenReady = false
+        MediaController.releaseFuture(_controllerFuture)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _player.release()
+    private fun hideSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, _binding.playerControlView).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 }
