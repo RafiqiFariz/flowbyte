@@ -1,4 +1,4 @@
-package com.flowbyte
+package com.flowbyte.activities
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -7,11 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.flowbyte.databinding.ActivitySignUpBinding
-import com.flowbyte.ui.home.HomeFragment
+import com.flowbyte.R
 import com.google.firebase.auth.FirebaseAuth
 
 class SignUpActivity : AppCompatActivity() {

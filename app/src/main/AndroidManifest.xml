@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
@@ -15,20 +15,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Flowbyte"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".GettingStartedActivity"
-            android:exported="true" />
-<!--        <activity-->
-<!--            android:name=".Splashscreen"-->
-<!--            android:exported="true" />-->
+            android:name=".activities.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings" />
         <activity
-            android:name=".ui.song.SongActivity"
+            android:name=".activities.GettingStartedActivity"
+            android:exported="true" /> <!-- <activity -->
+        <!-- android:name=".Splashscreen" -->
+        <!-- android:exported="true" /> -->
+        <activity
+            android:name=".activities.SongActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -38,23 +41,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:exported="true">
-        </activity>
+            android:name=".activities.LoginActivity"
+            android:exported="true"></activity>
         <activity
-            android:name=".SignUpActivity"
-            android:exported="true">
-        </activity>
+            android:name=".activities.SignUpActivity"
+            android:exported="true"></activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:name=".activities.MainActivity"
+            android:exported="true"></activity>
+
         <service
             android:name=".service.PlaybackService"
-            android:foregroundServiceType="mediaPlayback"
-            android:exported="true">
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
             <intent-filter>
-                <action android:name="androidx.media3.session.MediaSessionService"/>
+                <action android:name="androidx.media3.session.MediaSessionService" />
             </intent-filter>
         </service>
     </application>

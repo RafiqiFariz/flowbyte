@@ -1,35 +1,36 @@
-package com.flowbyte.ui.menu
+package com.flowbyte.ui.menu_bottom_sheet
 
+import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.flowbyte.R
 import com.flowbyte.data.MenuItem
-import com.flowbyte.ui.menu.adapter.MenuAdapter
+import com.flowbyte.adapter.MenuAdapter
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class MenuFragment : Fragment() {
+class MenuBottomSheetFragment : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance() = MenuFragment()
+        fun newInstance() = MenuBottomSheetFragment()
     }
 
-    private lateinit var viewModel: MenuViewModel
+    private lateinit var viewModel: MenuBottomSheetViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_menu, container, false)
+        return inflater.inflate(R.layout.fragment_menu_bottom_sheet, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MenuBottomSheetViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
