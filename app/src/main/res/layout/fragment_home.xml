@@ -67,8 +67,12 @@
                         app:layout_constraintStart_toEndOf="@+id/artistName" />
 
                     <ImageView
+                        android:id="@+id/btn_settings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:src="@drawable/ic_settings_24dp" />
                 </LinearLayout>
             </LinearLayout>

@@ -1,7 +1,6 @@
-package com.flowbyte
+package com.flowbyte.activities
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
@@ -10,6 +9,7 @@ import android.text.style.ForegroundColorSpan
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.flowbyte.R
 
 class GettingStartedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +49,8 @@ class GettingStartedActivity : AppCompatActivity() {
 
         val btnGettingStart = findViewById<Button>(R.id.buttonGettingStarted)
         btnGettingStart.setOnClickListener {
-//            val intentLogin = Intent(this, LoginActivity::class.java)
-            val intentLogin = Intent(this, MainActivity::class.java) // utk bypass
+            val intentLogin = Intent(this, LoginActivity::class.java)
+//            val intentLogin = Intent(this, MainActivity::class.java) // utk bypass
             startActivity(intentLogin)
         }
     }

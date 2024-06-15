@@ -1,8 +1,9 @@
-package com.flowbyte.ui.song
+package com.flowbyte.activities
 
 import android.content.ComponentName
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.annotation.OptIn
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -10,8 +11,11 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import com.flowbyte.R
 import com.flowbyte.databinding.ActivitySongBinding
 import com.flowbyte.service.PlaybackService
+import com.flowbyte.ui.menu_bottom_sheet.MenuBottomSheetFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 
@@ -24,9 +28,21 @@ class SongActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(_binding.root)
-        hideSystemUI()
+
+        // ini cuma buat testing
+        // dropdown playing from playlist
+        val playlistItems = arrayOf("Rock", "Pop", "Jazz", "Classical", "Hip-Hop")
+        val adapter = ArrayAdapter(this, R.layout.simple_spinner_dropdown_item, playlistItems)
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        _binding.playlistSpinner.adapter = adapter
+
+        _binding.btnSongSettings.setOnClickListener {
+            val menuBottomSheet = MenuBottomSheetFragment()
+            menuBottomSheet.show(supportFragmentManager, menuBottomSheet.tag)
+        }
+//        hideSystemUI()
     }
-    
+
     @OptIn(UnstableApi::class)
     override fun onStart() {
         super.onStart()

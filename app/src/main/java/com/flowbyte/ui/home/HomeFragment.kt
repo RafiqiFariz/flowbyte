@@ -2,15 +2,16 @@ package com.flowbyte.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.flowbyte.activities.SettingsActivity
 import com.flowbyte.databinding.FragmentHomeBinding
-import com.flowbyte.ui.song.SongActivity
+import com.flowbyte.activities.SongActivity
 
 class HomeFragment : Fragment() {
 
@@ -45,6 +46,12 @@ class HomeFragment : Fragment() {
         binding.cardView1.setOnClickListener {
             val intent = Intent(this.requireContext(), SongActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.cardView2.setOnClickListener {
+            Log.d("HomeFragment", "btn_settings clicked")
+            val settingsIntent = Intent(this.requireContext(), SettingsActivity::class.java)
+            startActivity(settingsIntent)
         }
 
         return root

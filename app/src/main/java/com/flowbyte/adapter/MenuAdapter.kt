@@ -1,4 +1,4 @@
-package com.flowbyte.ui.menu.adapter
+package com.flowbyte.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,7 @@ import com.flowbyte.data.MenuItem
 class MenuAdapter(private val menuList: List<MenuItem>) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_menu, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_menu_bottom_sheet, parent, false)
         return ViewHolder(view)
     }
 
