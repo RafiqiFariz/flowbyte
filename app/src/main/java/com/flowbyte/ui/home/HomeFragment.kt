@@ -1,28 +1,28 @@
 package com.flowbyte.ui.home
 
-import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.flowbyte.R
-import com.flowbyte.adapter.RecyclerViewAlbumAdapter
-import com.flowbyte.data.SongAlbumItem
-import com.flowbyte.activities.SettingsActivity
-import com.flowbyte.databinding.FragmentHomeBinding
-import com.flowbyte.activities.SongActivity
+import android.os.Bundle
+import android.view.Menu
+import android.view.View
+import android.view.MenuItem
+import android.view.ViewGroup
+import android.content.Intent
+import com.bumptech.glide.Glide
+import android.view.MenuInflater
+import android.view.LayoutInflater
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import androidx.fragment.app.Fragment
+import androidx.core.view.MenuProvider
+import com.flowbyte.data.SongAlbumItem
+import androidx.lifecycle.ViewModelProvider
+import com.flowbyte.activities.SongActivity
+import com.google.firebase.auth.FirebaseUser
+import com.flowbyte.activities.SettingsActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.flowbyte.databinding.FragmentHomeBinding
+import com.flowbyte.adapter.RecyclerViewAlbumAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -72,14 +72,16 @@ class HomeFragment : Fragment() {
         val gridLayoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
         binding.recyclerViewALLAlbum.layoutManager = gridLayoutManager
 
-        // Creating adapter with a lambda to provide the fragment instance
-        adapter = RecyclerViewAlbumAdapter({ this }, listAlbum)
-        binding.recyclerViewALLAlbum.adapter = adapter
+        adapter = RecyclerViewAlbumAdapter({ this }, listAlbum, object : RecyclerViewAlbumAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                if (position == 0) {
+                    val intent = Intent(requireContext(), SongActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+        })
 
-        binding.cardView1.setOnClickListener {
-            val intent = Intent(this.requireContext(), SongActivity::class.java)
-            startActivity(intent)
-        }
+        binding.recyclerViewALLAlbum.adapter = adapter
 
         activity?.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -97,7 +99,7 @@ class HomeFragment : Fragment() {
                 }
                 return false
             }
-        })
+        }, viewLifecycleOwner)
 
         return root
     }

@@ -15,14 +15,22 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.flowbyte.R
 import com.flowbyte.data.SongAlbumItem
 
-class RecyclerViewAlbumAdapter(private val getSpecificFragment: () -> Fragment, private val listAlbum: List<SongAlbumItem>) : RecyclerView.Adapter<RecyclerViewAlbumAdapter.MyViewHolder>() {
+class RecyclerViewAlbumAdapter(
+    private val getSpecificFragment: () -> Fragment,
+    private val listAlbum: List<SongAlbumItem>,
+    private val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<RecyclerViewAlbumAdapter.AlbumViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_card_components, parent, false)
-        return MyViewHolder(view)
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_card_components, parent, false)
+        return AlbumViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         holder.albumTitle.text = listAlbum[position].text
         Glide.with(holder.albumImg.context)
             .load(listAlbum[position].imageResId)
@@ -32,14 +40,17 @@ class RecyclerViewAlbumAdapter(private val getSpecificFragment: () -> Fragment, 
 
         holder.cardView.setOnClickListener {
             Toast.makeText(holder.itemView.context, listAlbum[position].text, Toast.LENGTH_LONG).show()
+            itemClickListener.onItemClick(position)
         }
+
+        holder.bindingAdapterPosition
     }
 
     override fun getItemCount(): Int {
         return listAlbum.size
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val albumTitle: TextView = itemView.findViewById(R.id.cardText)
         val albumImg: ImageView = itemView.findViewById(R.id.imageCard)
         val cardView: CardView = itemView.findViewById(R.id.cardView)
