@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:padding="@dimen/page_margin">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -16,8 +16,8 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/ariana"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ariana" />
 
         <ImageView
             android:id="@+id/editIcon"
@@ -34,19 +34,20 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/profile_name"
+        android:id="@+id/profileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="User Name"
+        android:textColor="@color/white"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="4dp" />
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/profile_email"
+        android:id="@+id/profileEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="user@example.com"
-        android:textSize="14sp"
-        android:textColor="@color/dark_gray" />
+        android:textColor="@color/dark_gray"
+        android:textSize="14sp" />
 </LinearLayout>

@@ -15,7 +15,6 @@ import com.flowbyte.R
 import com.flowbyte.databinding.ActivitySongBinding
 import com.flowbyte.service.PlaybackService
 import com.flowbyte.ui.menu_bottom_sheet.MenuBottomSheetFragment
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 
