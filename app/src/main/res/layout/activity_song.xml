@@ -4,26 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.song.SongActivity">
+    tools:context=".activities.SongActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="64dp"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+        android:padding="@dimen/activity_vertical_margin">
+
+        <RelativeLayout
+            android:id="@+id/likeAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentStart="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:text="@string/song_playing_from_playlist" />
+
+                <Spinner
+                    android:id="@+id/playlist_spinner"
+                    android:layout_width="wrap_content"
+                    android:dropDownHorizontalOffset="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btn_song_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:minWidth="28dp"
+                android:minHeight="28dp"
+                android:src="@drawable/ic_more_vert_fill_24dp" />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="330dp"
+            android:layout_marginTop="40dp"
             android:scaleType="centerCrop"
             android:src="@drawable/musium_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/likeAdd" />
 
         <TextView
             android:id="@+id/textView"
@@ -78,14 +114,23 @@
             </LinearLayout>
         </LinearLayout>
 
-        <androidx.media3.ui.PlayerView
+        <androidx.media3.ui.PlayerControlView
             android:id="@+id/playerControlView"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:controller_layout_id="@layout/custom_controls"
+            app:hide_on_touch="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            app:repeat_toggle_modes="one"
+            app:show_next_button="true"
+            app:show_previous_button="true"
+            app:show_shuffle_button="true"
+            app:show_timeout="0"
+            app:shutter_background_color="@android:color/transparent"
+            app:use_artwork="false" />
 
         <TextView
             android:id="@+id/lyricsTitle"
@@ -111,20 +156,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lyricsTitle">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="24dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Headline"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="8dp"
-                    android:text="@string/lorem_ipsum"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:padding="24dp">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="8dp"
+                        android:text="@string/lorem_ipsum"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

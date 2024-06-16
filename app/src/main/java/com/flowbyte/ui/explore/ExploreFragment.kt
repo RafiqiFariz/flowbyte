@@ -11,7 +11,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.flowbyte.data.ListGenre
 import com.flowbyte.R
 import com.flowbyte.adapter.RecyclerViewListGenreAdapter
+import com.flowbyte.data.GenreResponse
 import com.flowbyte.databinding.FragmentExploreBinding
+import com.flowbyte.service.deezer.ApiClient
+import com.flowbyte.service.deezer.DeezerApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ExploreFragment : Fragment() {
 
@@ -26,47 +34,52 @@ class ExploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         (requireActivity() as AppCompatActivity?)?.supportActionBar?.hide()
-        val exploreViewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Assuming you have a list of genres to display
-        val listGenres = listOf(
-            ListGenre("Genre 1", R.drawable.genre),
-            ListGenre("Genre 2", R.drawable.genre),
-            ListGenre("Genre 3", R.drawable.genre),
-            ListGenre("Genre 4", R.drawable.genre)
-        )
+        // Setting up RecyclerView with GridLayoutManager for the first RecyclerView
+        binding.recyclerViewGenre.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
+        binding.recyclerViewALLGenre.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
 
-        val allGenres = listOf(
-            ListGenre("Genre 1", R.drawable.genre),
-            ListGenre("Genre 2", R.drawable.genre),
-            ListGenre("Genre 3", R.drawable.genre),
-            ListGenre("Genre 4", R.drawable.genre),
-            ListGenre("Genre 5", R.drawable.genre),
-            ListGenre("Genre 6", R.drawable.genre),
-            ListGenre("Genre 7", R.drawable.genre),
-            ListGenre("Genre 8", R.drawable.genre)
-        )
-
-        // Setting up RecyclerView with LinearLayoutManager for the first RecyclerView
-        val gridLayoutManager1 = GridLayoutManager(requireContext(), 2) // 2 columns
-        binding.recyclerViewGenre.layoutManager = gridLayoutManager1
-
-        // Creating adapter with a lambda to provide the fragment instance
-        adapter = RecyclerViewListGenreAdapter({ this }, listGenres)
-        binding.recyclerViewGenre.adapter = adapter
-
-        // Setting up RecyclerView with GridLayoutManager for the second RecyclerView
-        val gridLayoutManager2 = GridLayoutManager(requireContext(), 2) // 2 columns
-        binding.recyclerViewALLGenre.layoutManager = gridLayoutManager2
-
-        // Creating adapter with a lambda to provide the fragment instance
-        adapter = RecyclerViewListGenreAdapter({ this }, allGenres)
-        binding.recyclerViewALLGenre.adapter = adapter
+        fetchGenres()
 
         return root
+    }
+
+    private fun fetchGenres() {
+        val apiService = ApiClient.retrofit.create(DeezerApiService::class.java)
+        val call = apiService.getGenres()
+
+        call.enqueue(object : Callback<GenreResponse> {
+            override fun onResponse(call: Call<GenreResponse>, response: Response<GenreResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val genres = it.data
+
+                        // Update UI with fetched genres
+                        updateRecyclerViews(genres)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GenreResponse>, t: Throwable) {
+                // Handle error
+            }
+        })
+    }
+
+    private fun updateRecyclerViews(genres: List<ListGenre>) {
+        // Splitting genres into two lists for the two RecyclerViews
+        val listGenres = genres.take(4) // First 4 genres
+        val allGenres = genres // All genres
+
+        // Creating adapters and setting them to RecyclerViews
+        val adapter1 = RecyclerViewListGenreAdapter({ this }, listGenres)
+        binding.recyclerViewGenre.adapter = adapter1
+
+        val adapter2 = RecyclerViewListGenreAdapter({ this }, allGenres)
+        binding.recyclerViewALLGenre.adapter = adapter2
     }
 
     override fun onDestroyView() {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "316152905635",
+    "project_id": "flowbyte-38a45",
+    "storage_bucket": "flowbyte-38a45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316152905635:android:a7677537ade54724622416",
+        "android_client_info": {
+          "package_name": "com.flowbyte"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJwHpe8kghjM4suywJqwBMJwIiqw-1Wr8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

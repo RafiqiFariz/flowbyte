@@ -29,4 +29,6 @@
     <string name="lorum_ipsum_dolor">lorum ipsum dolor</string>
     <string name="the_weeekndw">The Weeeknd</string>
     <string name="after_hoursby_the_weeknd_is_a_highly_anticipated">After Hoursby The Weeknd is a highly anticipated...</string>
+    <string name="song_playing_from_playlist">PLAYING FROM PLAYLIST:</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>
