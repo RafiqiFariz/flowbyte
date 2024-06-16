@@ -1,13 +1,13 @@
 package com.flowbyte.activities
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceFragmentCompat
-import com.flowbyte.R
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
@@ -15,17 +15,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
+import com.flowbyte.R
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
-import java.lang.Exception
-import java.util.UUID
 
 class SettingsActivity : AppCompatActivity() {
     private var fileUri: Uri? = null
@@ -131,8 +135,35 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
+        private val SHARED_PREFS: String = "sharedPrefs"
+        private val REMEMBER_ME: String = "rememberMe"
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+//            val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
+//            val logoutPreference = sp.getString("logout", "")
+
+            findPreference<Preference>("logout")
+                ?.setOnPreferenceClickListener {
+                    // Clear the shared preferences
+                    val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean(REMEMBER_ME, false)
+                    editor.apply()
+
+                    // Perform the logout operation
+                    FirebaseAuth.getInstance().signOut()
+
+                    // Navigate to the login screen
+                    val intent = Intent(activity, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+
+                    // Show a toast or message to indicate successful logout
+                    Toast.makeText(activity, "Logged out successfully", Toast.LENGTH_SHORT).show()
+
+                    true
+                }
         }
     }
 }
