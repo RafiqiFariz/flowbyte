@@ -9,12 +9,13 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.flowbyte.R
-import com.flowbyte.data.ListGenre
+import com.flowbyte.data.ListArtist
+import com.flowbyte.ui.artistBasedByGenre.ArtistBasedByGenreFragment
 
-class RecyclerViewListGenreAdapter(
-    private val listGenre: List<ListGenre>,
-    private val onGenreClickListener: OnGenreClickListener
-) : RecyclerView.Adapter<RecyclerViewListGenreAdapter.MyViewHolder>() {
+class RecyclerViewArtistAdapter(
+    private val listArtist: List<ListArtist>,
+    private val onGenreClickListener: ArtistBasedByGenreFragment
+) : RecyclerView.Adapter<RecyclerViewArtistAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_card_components, parent, false)
@@ -22,20 +23,20 @@ class RecyclerViewListGenreAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val genre = listGenre[position]
-        holder.genreListTitle.text = genre.name
+        val artist = listArtist[position]
+        holder.genreListTitle.text = artist.name
         Glide.with(holder.itemView.context)
-            .load(genre.picture)
+            .load(artist.picture)
             .placeholder(R.drawable.placeholder)
             .into(holder.genreListImg)
 
         holder.cardView.setOnClickListener {
-            onGenreClickListener.onGenreClick(genre)
+//            onGenreClickListener.onGenreClick(artist)
         }
     }
 
     override fun getItemCount(): Int {
-        return listGenre.size
+        return listArtist.size
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
