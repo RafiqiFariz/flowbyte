@@ -6,22 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.flowbyte.data.ListGenre
 import com.flowbyte.R
+import com.flowbyte.adapter.OnGenreClickListener
 import com.flowbyte.adapter.RecyclerViewListGenreAdapter
+import com.flowbyte.data.ListGenre
 import com.flowbyte.data.GenreResponse
 import com.flowbyte.databinding.FragmentExploreBinding
 import com.flowbyte.service.deezer.ApiClient
 import com.flowbyte.service.deezer.DeezerApiService
+import com.flowbyte.ui.artistBasedByGenre.ArtistBasedByGenreFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class ExploreFragment : Fragment() {
+class ExploreFragment : Fragment(), OnGenreClickListener {
 
     private var _binding: FragmentExploreBinding? = null
     private lateinit var adapter: RecyclerViewListGenreAdapter
@@ -72,8 +71,23 @@ class ExploreFragment : Fragment() {
         // Filter out genres where the name is "all"
         val filteredGenres = genres.filter { it.name.lowercase() != "all" }
 
-        val adapter = RecyclerViewListGenreAdapter({ this }, filteredGenres)
+        val adapter = RecyclerViewListGenreAdapter(filteredGenres, this)
         binding.recyclerViewALLGenre.adapter = adapter
+    }
+
+    override fun onGenreClick(genre: ListGenre) {
+        val fragment = getSpecificFragment(genre)
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.setReorderingAllowed(true) // Ensure atomic back stack operations
+        transaction.replace(R.id.nav_host_fragment_activity_main, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+
+    private fun getSpecificFragment(genre: ListGenre): Fragment {
+        // Return the fragment you want to navigate to, using the genre information if necessary
+        return ArtistBasedByGenreFragment.newInstance(genre.id)
     }
 
     override fun onDestroyView() {
