@@ -39,7 +39,6 @@ class ExploreFragment : Fragment() {
         val root: View = binding.root
 
         // Setting up RecyclerView with GridLayoutManager for the first RecyclerView
-        binding.recyclerViewGenre.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
         binding.recyclerViewALLGenre.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
 
         fetchGenres()
@@ -70,16 +69,11 @@ class ExploreFragment : Fragment() {
     }
 
     private fun updateRecyclerViews(genres: List<ListGenre>) {
-        // Splitting genres into two lists for the two RecyclerViews
-        val listGenres = genres.take(4) // First 4 genres
-        val allGenres = genres // All genres
+        // Filter out genres where the name is "all"
+        val filteredGenres = genres.filter { it.name.lowercase() != "all" }
 
-        // Creating adapters and setting them to RecyclerViews
-        val adapter1 = RecyclerViewListGenreAdapter({ this }, listGenres)
-        binding.recyclerViewGenre.adapter = adapter1
-
-        val adapter2 = RecyclerViewListGenreAdapter({ this }, allGenres)
-        binding.recyclerViewALLGenre.adapter = adapter2
+        val adapter = RecyclerViewListGenreAdapter({ this }, filteredGenres)
+        binding.recyclerViewALLGenre.adapter = adapter
     }
 
     override fun onDestroyView() {

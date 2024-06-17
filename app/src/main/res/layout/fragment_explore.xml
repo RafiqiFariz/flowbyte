@@ -72,7 +72,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textViewTopGenres"
+            android:id="@+id/textViewAllGenres"
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,27 +83,6 @@
             app:layout_constraintTop_toBottomOf="@+id/secondLinearLayout" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewGenre"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/textViewTopGenres"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            android:id="@+id/textViewAllGenres"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/song_title"
-            android:fontFamily="@font/gothic_b"
-            android:textSize="27dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenre" />
-
-        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewALLGenre"
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
@@ -112,5 +91,6 @@
             app:layout_constraintTop_toBottomOf="@id/textViewAllGenres"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
