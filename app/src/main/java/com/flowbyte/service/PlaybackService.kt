@@ -14,26 +14,34 @@ class PlaybackService : MediaSessionService() {
 
     override fun onCreate() {
         super.onCreate()
-        initializeSessionAndPlayer()
     }
 
-    private fun initializeSessionAndPlayer() {
-        val audioItem = MediaItem.Builder()
-            .setUri("https://github.com/dicodingacademy/assets/raw/main/android_intermediate_academy/bensound_ukulele.mp3")
+    private fun initializeSessionAndPlayer(songUri: String) {
+        val player = ExoPlayer.Builder(this).build()
+
+        mediaSession = MediaSession.Builder(this, player).build()
+
+        val mediaItem = MediaItem.Builder()
+            .setUri(songUri)
             .setMediaMetadata(
                 MediaMetadata.Builder()
-                    .setTitle("Ukulele")
-                    .setArtist("Bensound")
+                    .setTitle("Song Title") // You can modify this to set actual title and artist
+                    .setArtist("Song Artist") // You can modify this to set actual title and artist
                     .build()
             ).build()
 
-        val player = ExoPlayer.Builder(this).build().also { exoPlayer ->
-            exoPlayer.setMediaItem(audioItem)
-            exoPlayer.prepare()
-            exoPlayer.play()
-        }
+        player.setMediaItem(mediaItem)
+        player.prepare()
+        player.play()
+    }
 
-        mediaSession = MediaSession.Builder(this, player).build()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
+        val songUri = intent?.getStringExtra("song_uri")
+        if (songUri != null) {
+            initializeSessionAndPlayer(songUri)
+        }
+        return START_STICKY
     }
 
     // The user dismissed the app from the recent tasks
@@ -47,7 +55,8 @@ class PlaybackService : MediaSessionService() {
         stopSelf()
     }
 
-    @OptIn(UnstableApi::class) override fun onUpdateNotification(session: MediaSession, startInForegroundRequired: Boolean) {
+    @OptIn(UnstableApi::class)
+    override fun onUpdateNotification(session: MediaSession, startInForegroundRequired: Boolean) {
         super.onUpdateNotification(session, startInForegroundRequired)
 
         if (!startInForegroundRequired) {

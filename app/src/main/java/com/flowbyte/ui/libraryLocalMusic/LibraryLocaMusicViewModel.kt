@@ -1,10 +1,10 @@
-package com.flowbyte.ui.library
+package com.flowbyte.ui.libraryLocalMusic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class LibraryViewModel : ViewModel() {
+class LibraryLocaMusicViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is library Fragment"

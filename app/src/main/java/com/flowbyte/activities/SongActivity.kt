@@ -1,6 +1,8 @@
 package com.flowbyte.activities
 
 import android.content.ComponentName
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -8,7 +10,9 @@ import androidx.annotation.OptIn
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.flowbyte.R
@@ -21,12 +25,33 @@ import com.google.common.util.concurrent.MoreExecutors
 class SongActivity : AppCompatActivity() {
     private lateinit var _binding: ActivitySongBinding
     private lateinit var _controllerFuture: ListenableFuture<MediaController>
+    private lateinit var exoPlayer: ExoPlayer
+    private lateinit var songUri: String
 
     @OptIn(UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySongBinding.inflate(layoutInflater)
         setContentView(_binding.root)
+
+        // Initialize ExoPlayer
+        exoPlayer = ExoPlayer.Builder(this).build()
+        _binding.playerControlView.player = exoPlayer
+
+        // Get song URI from intent
+        songUri = intent.getStringExtra("song_uri") ?: return
+
+
+//        val mediaItem = MediaItem.fromUri(Uri.parse(songUri))
+//        exoPlayer.setMediaItem(mediaItem)
+//        exoPlayer.prepare()
+//        exoPlayer.playWhenReady = true
+
+        // Start PlaybackService with the song URI
+        val playbackServiceIntent = Intent(this, PlaybackService::class.java).apply {
+            putExtra("song_uri", songUri)
+        }
+        startService(playbackServiceIntent)
 
         // ini cuma buat testing
         // dropdown playing from playlist
@@ -39,7 +64,8 @@ class SongActivity : AppCompatActivity() {
             val menuBottomSheet = MenuBottomSheetFragment()
             menuBottomSheet.show(supportFragmentManager, menuBottomSheet.tag)
         }
-//        hideSystemUI()
+
+        // hideSystemUI() // Uncomment this line to hide the system UI
     }
 
     @OptIn(UnstableApi::class)
@@ -56,6 +82,12 @@ class SongActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         MediaController.releaseFuture(_controllerFuture)
+        exoPlayer.release()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        exoPlayer.release()
     }
 
     private fun hideSystemUI() {
