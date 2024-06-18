@@ -1,13 +1,15 @@
+package com.flowbyte.adapter
+
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.flowbyte.databinding.NavLibraryBinding
 import com.flowbyte.data.LibraryMenuItem
+import com.flowbyte.databinding.NavLibraryBinding
 
 class RecylerNavLibraryAdapter(
-    private val getSpecificFragment: () -> Fragment,
-    private val navLibrary: List<LibraryMenuItem>
+    private val navLibrary: List<LibraryMenuItem>,
+    private val onItemClick: (LibraryMenuItem) -> Unit
 ) : RecyclerView.Adapter<RecylerNavLibraryAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -30,8 +32,8 @@ class RecylerNavLibraryAdapter(
         fun bind(libraryMenuItem: LibraryMenuItem) {
             binding.buttonNavLibrary.text = libraryMenuItem.name
             binding.buttonNavLibrary.setOnClickListener {
-                // Handle button click here
-                // Example: Toast.makeText(itemView.context, "Clicked ${libraryMenuItem.name}", Toast.LENGTH_SHORT).show()
+                Log.d("RecylerNavLibraryAdapter", "Item clicked: ${libraryMenuItem})")
+                onItemClick(libraryMenuItem)
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.flowbyte.ui.libraryLocalMusic
 
-import RecylerNavLibraryAdapter
 import android.content.ContentResolver
 import android.content.Intent
 import android.database.Cursor
@@ -11,20 +10,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.flowbyte.activities.SongActivity
 import com.flowbyte.adapter.MusicAdapter
 import com.flowbyte.data.LibraryMenuItem
 import com.flowbyte.databinding.FragmentLibraryLocalMusicBinding
+import com.flowbyte.ui.libraryPlaylistMusic.LibraryPlaylistMusicFragment
+import com.flowbyte.R
+import com.flowbyte.adapter.RecylerNavLibraryAdapter
 
 class LibraryLocalMusicFragment : Fragment() {
 
     private var _binding: FragmentLibraryLocalMusicBinding? = null
-    private lateinit var adapter: RecylerNavLibraryAdapter
     private lateinit var musicAdapter: MusicAdapter
     private val binding get() = _binding!!
 
@@ -40,15 +39,16 @@ class LibraryLocalMusicFragment : Fragment() {
         val root: View = binding.root
 
         val navLibraryMenu = listOf(
-            LibraryMenuItem("Genre 1"),
-            LibraryMenuItem("Genre 2"),
-            LibraryMenuItem("Genre 3"),
-            LibraryMenuItem("Genre 4")
+            LibraryMenuItem("Local Music"),
+            LibraryMenuItem("Playlist")
         )
 
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.recylerNavLibrary.layoutManager = linearLayoutManager
-        adapter = RecylerNavLibraryAdapter({ this }, navLibraryMenu)
+        val adapter = RecylerNavLibraryAdapter(navLibraryMenu) { menuItem ->
+            Log.d("LibraryLocalMusicFragment", "Item clicked: $menuItem")
+            handleNavItemClick(menuItem.name)
+        }
         binding.recylerNavLibrary.adapter = adapter
 
         // Set up RecyclerView for music files
@@ -58,12 +58,29 @@ class LibraryLocalMusicFragment : Fragment() {
             // Handle item click: Open SongActivity and pass selected song URI
             val intent = Intent(requireContext(), SongActivity::class.java)
             intent.putExtra("song_uri", audioFile.uri.toString())
-//            intent.putExtra('song_name', audioFile.title)
+            intent.putExtra("song_name", audioFile.title)
+            intent.putExtra("song_artist", audioFile.artist)
             startActivity(intent)
         }
         binding.recylerPlaylist.adapter = musicAdapter
 
         return root
+    }
+
+    private fun handleNavItemClick(menuItem: Any) {
+        val fragment = when (menuItem) {
+            "Local Music" -> LibraryLocalMusicFragment()
+            "Playlist" -> LibraryPlaylistMusicFragment()
+            else -> null
+        }
+        Log.d("LibraryLocalMusicFragment", "Item clicked: $fragment")
+        fragment?.let {
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.nav_host_fragment_activity_main, it) // Ensure you have a container in your layout
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun getAllMp3Files(): List<AudioFile> {

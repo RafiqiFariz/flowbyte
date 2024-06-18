@@ -5,7 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.annotation.OptIn
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,6 +29,8 @@ class SongActivity : AppCompatActivity() {
     private lateinit var _controllerFuture: ListenableFuture<MediaController>
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var songUri: String
+    private lateinit var songTitle: String
+    private lateinit var songArtist: String
 
     @OptIn(UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,8 +44,14 @@ class SongActivity : AppCompatActivity() {
 
         // Get song URI from intent
         songUri = intent.getStringExtra("song_uri") ?: return
+        songTitle = intent.getStringExtra("song_name")!!
+        songArtist = intent.getStringExtra("song_artist")!!
 
+        val textView = findViewById<View>(R.id.textView) as TextView
+        textView.text = songTitle
 
+        val artistNameTextView = findViewById<View>(R.id.artistName) as TextView
+        artistNameTextView.text = songArtist
 //        val mediaItem = MediaItem.fromUri(Uri.parse(songUri))
 //        exoPlayer.setMediaItem(mediaItem)
 //        exoPlayer.prepare()
@@ -50,6 +60,8 @@ class SongActivity : AppCompatActivity() {
         // Start PlaybackService with the song URI
         val playbackServiceIntent = Intent(this, PlaybackService::class.java).apply {
             putExtra("song_uri", songUri)
+            putExtra("song_name", songTitle)
+            putExtra("song_artist", songArtist)
         }
         startService(playbackServiceIntent)
 

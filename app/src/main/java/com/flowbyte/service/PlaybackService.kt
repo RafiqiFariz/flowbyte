@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
@@ -16,17 +17,19 @@ class PlaybackService : MediaSessionService() {
         super.onCreate()
     }
 
-    private fun initializeSessionAndPlayer(songUri: String) {
+    @OptIn(UnstableApi::class) private fun initializeSessionAndPlayer(songUri: String, songName: String, songArtist: String) {
         val player = ExoPlayer.Builder(this).build()
 
         mediaSession = MediaSession.Builder(this, player).build()
-
+        Log.d("PlaybackService1", "initializeSessionAndPlayer: $songUri")
+        Log.d("PlaybackService2", "initializeSessionAndPlayer: $songName")
+        Log.d("PlaybackService3", "initializeSessionAndPlayer: $songArtist")
         val mediaItem = MediaItem.Builder()
             .setUri(songUri)
             .setMediaMetadata(
                 MediaMetadata.Builder()
-                    .setTitle("Song Title") // You can modify this to set actual title and artist
-                    .setArtist("Song Artist") // You can modify this to set actual title and artist
+                    .setTitle(songName) // You can modify this to set actual title and artist
+                    .setArtist(songArtist) // You can modify this to set actual title and artist
                     .build()
             ).build()
 
@@ -38,8 +41,14 @@ class PlaybackService : MediaSessionService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         val songUri = intent?.getStringExtra("song_uri")
+        val songName = intent?.getStringExtra("song_name")
+        val songArtist = intent?.getStringExtra("song_artist")
         if (songUri != null) {
-            initializeSessionAndPlayer(songUri)
+            if (songName != null) {
+                if (songArtist != null) {
+                    initializeSessionAndPlayer(songUri, songName, songArtist)
+                }
+            }
         }
         return START_STICKY
     }
