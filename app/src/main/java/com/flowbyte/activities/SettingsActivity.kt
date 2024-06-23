@@ -164,6 +164,14 @@ class SettingsActivity : AppCompatActivity() {
 
                     true
                 }
+
+            findPreference<Preference>("about")
+                ?.setOnPreferenceClickListener{
+                    val intentAbout = Intent(activity, AboutActivity::class.java)
+                    startActivity(intentAbout)
+
+                    true
+                }
         }
     }
 }

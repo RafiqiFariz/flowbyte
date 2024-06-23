@@ -54,20 +54,25 @@ class LibraryLocalMusicFragment : Fragment() {
         // Set up RecyclerView for music files
         val musicLayoutManager = LinearLayoutManager(requireContext())
         binding.recylerPlaylist.layoutManager = musicLayoutManager
-        musicAdapter = MusicAdapter(getAllMp3Files()) { audioFile ->
+        musicAdapter = MusicAdapter(getAllMp3Files(), { audioFile ->
             // Handle item click: Open SongActivity and pass selected song URI
             val intent = Intent(requireContext(), SongActivity::class.java)
             intent.putExtra("song_uri", audioFile.uri.toString())
             intent.putExtra("song_name", audioFile.title)
             intent.putExtra("song_artist", audioFile.artist)
             startActivity(intent)
-        }
+        }, { audioFile ->
+            // Handle item long click: Perform the desired action on long click
+            // Example: Show a toast message or a dialog
+            Log.d("LibraryLocalMusicFragment", "Item long clicked: ${audioFile.title}")
+            // You can add further actions here if needed
+        })
         binding.recylerPlaylist.adapter = musicAdapter
 
         return root
     }
 
-    private fun handleNavItemClick(menuItem: Any) {
+    private fun handleNavItemClick(menuItem: String) {
         val fragment = when (menuItem) {
             "Local Music" -> LibraryLocalMusicFragment()
             "Playlist" -> LibraryPlaylistMusicFragment()

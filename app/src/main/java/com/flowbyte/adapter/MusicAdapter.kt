@@ -9,7 +9,8 @@ import com.flowbyte.ui.library.local_music.AudioFile
 
 class MusicAdapter(
     private val audioFiles: List<AudioFile>,
-    private val onItemClick: (AudioFile) -> Unit
+    private val onItemClick: (AudioFile) -> Unit,
+    private val onItemLongClick: (AudioFile) -> Unit
 ) : RecyclerView.Adapter<MusicAdapter.MusicViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicViewHolder {
@@ -22,6 +23,10 @@ class MusicAdapter(
         holder.bind(audioFile)
         holder.itemView.setOnClickListener {
             onItemClick(audioFile)
+        }
+        holder.itemView.setOnLongClickListener {
+            onItemLongClick(audioFile)
+            true
         }
     }
 

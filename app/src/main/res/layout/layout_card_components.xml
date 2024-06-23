@@ -10,7 +10,7 @@
     app:cardCornerRadius="12dp"
     android:backgroundTint="#4A558F">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_gravity="end"
@@ -24,23 +24,58 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="21sp"
-            android:text="Kpop" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:text="Kpop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:translationZ="1dp" />
 
         <ImageView
             android:id="@+id/imageCard"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/genre"
-            android:layout_gravity="center_vertical"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="-10dp"
             android:rotation="45"
-            app:cardCornerRadius="50dp"
-            android:layout_marginTop="32dp"
-            android:scaleType="centerCrop"/>
-    </LinearLayout>
+            android:scaleType="centerCrop"
+            android:src="@drawable/genre"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.7" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="120dp"-->
+<!--        android:layout_gravity="end"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingTop="10dp"-->
+<!--        android:paddingLeft="10dp">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/cardText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="21sp"-->
+<!--            android:text="Kpop" />-->
+
+<!--        <Space-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageCard"-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:src="@drawable/genre"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:rotation="45"-->
+<!--            app:cardCornerRadius="50dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:scaleType="centerCrop"/>-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.cardview.widget.CardView>

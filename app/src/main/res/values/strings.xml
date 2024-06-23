@@ -31,6 +31,18 @@
     <string name="after_hoursby_the_weeknd_is_a_highly_anticipated">After Hoursby The Weeknd is a highly anticipated...</string>
     <string name="song_playing_from_playlist">PLAYING FROM PLAYLIST:</string>
     <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- About Text  -->
+    <string name="AboutThisApp">
+        Aplikasi FlowByte merupakan aplikasi untuk mendegarkan musik, dimana pengguna dapat mendengar, menyimpan musik ke dalam playlist, dan membuat playlist musik sesuai keinginan. Aplikasi ini kami buat untuk memenuhi ujian akhir semester 6 untuk matakuliah pemrograman mobile yang diampu oleh bu Ruth Mariana Bunga Wadu, S.Kom., MMSI.
+    </string>
+    <string name="Aulia">Auila El Ihza fariz Rafiqi (2110511003)</string>
+    <string name="Aqil">Abdullah Aqil Athalla (2110511005)</string>
+    <string name="Pandu">Pandu Utomo (2110511007)</string>
+    <string name="Rana">Rana Ekakurnia Fathin (2110511059)</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="playlist_image" />
 </resources>
