@@ -1,12 +1,14 @@
 package com.flowbyte.activities
 
+import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +22,7 @@ class PlaylistDetailActivity : AppCompatActivity() {
     private val musicList = mutableListOf<AudioFile>()
     private lateinit var firestore: FirebaseFirestore
     private var playlistName: String? = null
+    private val allMusicList = mutableListOf<AudioFile>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,56 +36,77 @@ class PlaylistDetailActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView_music)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        musicAdapter = MusicAdapter(musicList) { audioFile ->
-            playAudioFile(audioFile)
-        }
+        musicAdapter = MusicAdapter(musicList, ::playAudioFile, ::removeAudioFile)
         recyclerView.adapter = musicAdapter
 
         val btnAddMusic = findViewById<Button>(R.id.btn_add_music)
         btnAddMusic.setOnClickListener {
-            pickAudioFile()
+            showSelectMusicDialog()
         }
 
+        // Load all music from local storage
+        loadAllMusicFromLocalStorage()
+
+        // Load music from Firestore
         loadMusicFromFirestore()
     }
 
-    private fun pickAudioFile() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "audio/*"
-            addCategory(Intent.CATEGORY_OPENABLE)
+    private fun showSelectMusicDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_select_music, null)
+        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerView_select_music)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val selectMusicAdapter = MusicAdapter(allMusicList, { audioFile ->
+            // Add selected song to the playlist
+            musicList.add(audioFile)
+            musicAdapter.notifyDataSetChanged()
+            saveMusicToFirestore(audioFile)
+            Toast.makeText(this, "Music added to playlist", Toast.LENGTH_SHORT).show()
+        }, { audioFile ->
+            // Do nothing on long click
+        })
+        recyclerView.adapter = selectMusicAdapter
+
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogView)
+        val dialog = builder.create()
+
+        dialogView.findViewById<Button>(R.id.btn_done).setOnClickListener {
+            dialog.dismiss()
         }
-        filePickerLauncher.launch(intent)
+
+        dialog.show()
     }
 
-    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            result.data?.data?.also { uri ->
-                val audioFile = getAudioFileDetails(uri)
-                if (audioFile != null) {
-                    musicList.add(audioFile)
-                    musicAdapter.notifyDataSetChanged()
-                    saveMusicToFirestore(audioFile)
-                }
-            }
-        }
+    private fun loadAllMusicFromLocalStorage() {
+        allMusicList.clear()
+        allMusicList.addAll(getAllMp3Files())
     }
 
-    private fun getAudioFileDetails(uri: Uri): AudioFile? {
-        var title: String? = null
-        var artist: String? = null
-        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val titleIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (titleIndex != -1) {
-                    title = cursor.getString(titleIndex)
-                }
+    private fun getAllMp3Files(): List<AudioFile> {
+        val audioList = mutableListOf<AudioFile>()
+        val contentResolver: ContentResolver = contentResolver
+        val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ARTIST
+        )
+        val selection = "${MediaStore.Audio.Media.MIME_TYPE}=?"
+        val selectionArgs = arrayOf("audio/mpeg")
+        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, null)
+        cursor?.use {
+            val idColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+            val titleColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+            val artistColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+            while (it.moveToNext()) {
+                val id = it.getLong(idColumn)
+                val title = it.getString(titleColumn)
+                val artist = it.getString(artistColumn)
+                val contentUri = Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id.toString())
+                audioList.add(AudioFile(contentUri, title, artist))
             }
         }
-        return if (title != null) {
-            AudioFile(uri, title!!, artist ?: "Unknown Artist")
-        } else {
-            null
-        }
+        return audioList
     }
 
     private fun playAudioFile(audioFile: AudioFile) {
@@ -106,10 +130,10 @@ class PlaylistDetailActivity : AppCompatActivity() {
             .collection("songs")
             .add(musicData)
             .addOnSuccessListener { documentReference ->
-                // Handle success
+                Toast.makeText(this, "Music saved to Firestore", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                // Handle failure
+                Toast.makeText(this, "Failed to save music to Firestore", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -130,7 +154,29 @@ class PlaylistDetailActivity : AppCompatActivity() {
                 musicAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
-                // Handle failure
+                Toast.makeText(this, "Failed to load music from Firestore", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun removeAudioFile(audioFile: AudioFile) {
+        // Hapus lagu dari playlist
+        musicList.remove(audioFile)
+        musicAdapter.notifyDataSetChanged()
+        // Hapus lagu dari Firestore
+        if (playlistName == null) return
+        firestore.collection("playlists")
+            .document(playlistName!!)
+            .collection("songs")
+            .whereEqualTo("uri", audioFile.uri.toString())
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                }
+                Toast.makeText(this, "Music removed from Firestore", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to remove music from Firestore", Toast.LENGTH_SHORT).show()
             }
     }
 }
