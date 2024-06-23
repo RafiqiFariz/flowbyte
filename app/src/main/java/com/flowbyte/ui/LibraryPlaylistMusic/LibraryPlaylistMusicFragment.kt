@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flowbyte.R
 import com.flowbyte.adapter.PlaylistAdapter
-import com.flowbyte.adapter.RecylerNavLibraryAdapter
+import com.flowbyte.adapter.RecyclerNavLibraryAdapter
 import com.flowbyte.data.LibraryMenuItem
 import com.flowbyte.data.Playlist
-import com.flowbyte.ui.libraryLocalMusic.LibraryLocalMusicFragment
+import com.flowbyte.ui.library.local_music.LibraryLocalMusicFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LibraryPlaylistMusicFragment : Fragment() {
@@ -54,7 +54,7 @@ class LibraryPlaylistMusicFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val navRecyclerView = view.findViewById<RecyclerView>(R.id.recylerNavLibrary)
         navRecyclerView.layoutManager = linearLayoutManager
-        val adapter = RecylerNavLibraryAdapter(navLibraryMenu) { menuItem ->
+        val adapter = RecyclerNavLibraryAdapter(navLibraryMenu) { menuItem ->
             Log.d("LibraryLocalMusicFragment", "Item clicked: ${menuItem.name}")
             handleNavItemClick(menuItem.name)
         }

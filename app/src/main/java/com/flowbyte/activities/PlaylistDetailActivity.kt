@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flowbyte.R
 import com.flowbyte.adapter.MusicAdapter
-import com.flowbyte.ui.libraryLocalMusic.AudioFile
+import com.flowbyte.ui.library.local_music.AudioFile
 import com.google.firebase.firestore.FirebaseFirestore
 
 class PlaylistDetailActivity : AppCompatActivity() {
