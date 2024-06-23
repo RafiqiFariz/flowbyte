@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.flowbyte.R
 import com.flowbyte.adapter.PlaylistAdapter
+import com.flowbyte.adapter.RecylerNavLibraryAdapter
+import com.flowbyte.data.LibraryMenuItem
 import com.flowbyte.data.Playlist
+import com.flowbyte.ui.libraryLocalMusic.LibraryLocalMusicFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LibraryPlaylistMusicFragment : Fragment() {
@@ -42,6 +45,20 @@ class LibraryPlaylistMusicFragment : Fragment() {
         btnAddNewPlaylist.setOnClickListener {
             showNewPlaylistDialog()
         }
+
+        // Setup navigation menu RecyclerView
+        val navLibraryMenu = listOf(
+            LibraryMenuItem("Local Music"),
+            LibraryMenuItem("Playlist")
+        )
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val navRecyclerView = view.findViewById<RecyclerView>(R.id.recylerNavLibrary)
+        navRecyclerView.layoutManager = linearLayoutManager
+        val adapter = RecylerNavLibraryAdapter(navLibraryMenu) { menuItem ->
+            Log.d("LibraryLocalMusicFragment", "Item clicked: ${menuItem.name}")
+            handleNavItemClick(menuItem.name)
+        }
+        navRecyclerView.adapter = adapter
 
         // Load playlists from Firestore
         loadPlaylistsFromFirestore()
@@ -71,6 +88,21 @@ class LibraryPlaylistMusicFragment : Fragment() {
         }
 
         dialog.show()
+    }
+
+    private fun handleNavItemClick(menuItem: String) {
+        val fragment = when (menuItem) {
+            "Local Music" -> LibraryLocalMusicFragment()
+            "Playlist" -> LibraryPlaylistMusicFragment()
+            else -> null
+        }
+        fragment?.let {
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.nav_host_fragment_activity_main, it) // Ensure you have a container in your layout
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun savePlaylistToFirestore(playlist: Playlist) {

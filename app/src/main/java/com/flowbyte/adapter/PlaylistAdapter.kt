@@ -39,7 +39,7 @@ class PlaylistAdapter(private val playlists: MutableList<Playlist>, private val 
         val playlist = playlists[position]
         holder.playlistTitle.text = playlist.name
         // Set the image for the playlist (using a placeholder for now)
-        holder.playlistImage.setImageResource(R.drawable.ic_playlist_placeholder)
+        holder.playlistImage.setImageResource(R.drawable.playlistpic)
     }
 
     override fun getItemCount() = playlists.size
