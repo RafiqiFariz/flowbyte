@@ -13,13 +13,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.flowbyte.R
 import com.flowbyte.activities.SongActivity
 import com.flowbyte.adapter.MusicAdapter
+import com.flowbyte.adapter.RecylerNavLibraryAdapter
 import com.flowbyte.data.LibraryMenuItem
 import com.flowbyte.databinding.FragmentLibraryLocalMusicBinding
 import com.flowbyte.ui.libraryPlaylistMusic.LibraryPlaylistMusicFragment
-import com.flowbyte.R
-import com.flowbyte.adapter.RecylerNavLibraryAdapter
 
 class LibraryLocalMusicFragment : Fragment() {
 
@@ -28,13 +28,10 @@ class LibraryLocalMusicFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val libraryLocaMusicViewModel =
-            ViewModelProvider(this).get(LibraryLocaMusicViewModel::class.java)
-
+        val libraryLocaMusicViewModel = ViewModelProvider(this).get(LibraryLocaMusicViewModel::class.java)
         _binding = FragmentLibraryLocalMusicBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -67,13 +64,12 @@ class LibraryLocalMusicFragment : Fragment() {
         return root
     }
 
-    private fun handleNavItemClick(menuItem: Any) {
+    private fun handleNavItemClick(menuItem: String) {
         val fragment = when (menuItem) {
             "Local Music" -> LibraryLocalMusicFragment()
             "Playlist" -> LibraryPlaylistMusicFragment()
             else -> null
         }
-        Log.d("LibraryLocalMusicFragment", "Item clicked: $fragment")
         fragment?.let {
             parentFragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
@@ -85,7 +81,6 @@ class LibraryLocalMusicFragment : Fragment() {
 
     private fun getAllMp3Files(): List<AudioFile> {
         val audioList = mutableListOf<AudioFile>()
-
         val contentResolver: ContentResolver = requireActivity().contentResolver
         val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(

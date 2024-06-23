@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.flowbyte.ui.libraryLocalMusic.AudioFile
 
+
 class MusicAdapter(
     private val audioFiles: List<AudioFile>,
     private val onItemClick: (AudioFile) -> Unit
