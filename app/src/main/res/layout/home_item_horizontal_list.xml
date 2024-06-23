@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardView"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:paddingRight="32dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageCard"
+            android:layout_width="370dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ariana"
+            android:scaleType="centerCrop" />
+
+        <!-- Background decoration circles -->
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="-15dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/card_circle_decor" />
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="-30dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/card_circle_decor" />
+
+        <TextView
+            android:id="@+id/cardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/gothic_b"
+            android:text="@string/ariana_grande"
+            android:textSize="16sp" />
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

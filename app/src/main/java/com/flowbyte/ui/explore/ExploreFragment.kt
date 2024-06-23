@@ -15,7 +15,7 @@ import com.flowbyte.data.GenreResponse
 import com.flowbyte.databinding.FragmentExploreBinding
 import com.flowbyte.service.deezer.ApiClient
 import com.flowbyte.service.deezer.DeezerApiService
-import com.flowbyte.ui.artistBasedByGenre.ArtistBasedByGenreFragment
+import com.flowbyte.ui.artist_based_by_genre.ArtistBasedByGenreFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

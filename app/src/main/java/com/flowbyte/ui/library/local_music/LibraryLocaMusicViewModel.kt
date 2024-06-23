@@ -1,4 +1,4 @@
-package com.flowbyte.ui.libraryLocalMusic
+package com.flowbyte.ui.library.local_music
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -75,7 +75,7 @@
             tools:context=".ui.home.HomeFragment">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewALLAlbum"
+                android:id="@+id/recyclerViewPlaylists"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -92,27 +92,19 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerViewALLAlbum">
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewPlaylists">
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="370dp"
-                        android:layout_height="200dp"
-                        android:background="@drawable/ariana" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/gothic_b"
-                        android:text="@string/ariana_grande"
-                        android:textSize="20sp" />
-                </FrameLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPlaylistsHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:spanCount="2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,11 +121,13 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/imgPlaylistBottom1"
                             android:layout_width="wrap_content"
                             android:layout_height="180dp"
                             android:background="@drawable/theweeknd" />
 
                         <TextView
+                            android:id="@+id/titlePlaylistBottom1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -141,14 +135,6 @@
                             android:text="@string/the_weeekndw"
                             android:textColor="@color/white"
                             android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/after_hoursby_the_weeknd_is_a_highly_anticipated"
-                            android:textSize="12sp"
-                            android:textStyle="bold|normal" />
                     </LinearLayout>
 
                     <Space
@@ -163,11 +149,13 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/imgPlaylistBottom2"
                             android:layout_width="wrap_content"
                             android:layout_height="180dp"
                             android:background="@drawable/theweeknd" />
 
                         <TextView
+                            android:id="@+id/titlePlaylistBottom2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -175,14 +163,6 @@
                             android:text="@string/the_weeekndw"
                             android:textColor="@color/white"
                             android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/after_hoursby_the_weeknd_is_a_highly_anticipated"
-                            android:textSize="12sp"
-                            android:textStyle="bold|normal" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

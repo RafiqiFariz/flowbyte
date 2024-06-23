@@ -1,14 +1,17 @@
 package com.flowbyte.ui.home
 
 import com.flowbyte.R
+import android.util.Log
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.content.Intent
+import android.os.Parcelable
 import com.bumptech.glide.Glide
 import android.view.MenuInflater
+import com.flowbyte.core.Resource
 import android.view.LayoutInflater
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -21,13 +24,22 @@ import com.google.firebase.auth.FirebaseUser
 import com.flowbyte.activities.SettingsActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.flowbyte.databinding.FragmentHomeBinding
-import com.flowbyte.adapter.RecyclerViewAlbumAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.flowbyte.adapter.RecyclerViewPlaylistsAdapter
+import com.flowbyte.data.models.playlist.Item
+import com.flowbyte.utils.GridSpacingItemDecoration
+import com.flowbyte.utils.HorizontalSpaceItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
+import java.io.Serializable
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
+    private lateinit var homeViewModel: HomeViewModel
     private var user: FirebaseUser? = null
-    private lateinit var adapter: RecyclerViewAlbumAdapter
+    private lateinit var adapter: RecyclerViewPlaylistsAdapter
+    private lateinit var adapter2: RecyclerViewPlaylistsAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,50 +50,59 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
+        homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        setupActionBar()
+        setupUserProfile()
 
+        homeViewModel.authorize()
+        homeViewModel.spotifyToken.observe(viewLifecycleOwner) { token ->
+            Log.d("Token Spotify: ", token.toString())
+        }
+
+        homeViewModel.fetchFeaturedPlaylists(11)
+        setupPlaylists()
+        homeViewModel.playlists.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val items1 = resource.data?.playlists?.items?.take(4) // Ambil 4 item pertama
+                    items1?.let { adapter.updateData(it) }
+
+                    val items2 = resource.data?.playlists?.items?.take(5) // Ambil 4 item pertama
+                    items2?.let { adapter2.updateData(it) }
+
+                    val items3 = resource.data?.playlists?.items?.takeLast(2)
+                    items3?.let {
+                        Log.d("Item Playlist: ", it.size.toString())
+                        Glide.with(this).load(it[0].images[0].url).into(binding.imgPlaylistBottom1)
+                        binding.titlePlaylistBottom1.text = it[0].name
+
+                        Glide.with(this).load(it[1].images[0].url).into(binding.imgPlaylistBottom2)
+                        binding.titlePlaylistBottom2.text = it[1].name
+                    }
+                }
+
+                is Resource.Error -> {
+                    Log.e("HomeFragment", "Error fetching playlists: ${resource.message}")
+                }
+            }
+        }
+        return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupActionBar() {
         val activity = (requireActivity() as AppCompatActivity?)
 
         activity?.setSupportActionBar(_binding?.toolbar)
         activity?.supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        val root: View = binding.root
-
-        // Atur profile picture dan nama user
-        user = Firebase.auth.currentUser
-
-        if (user?.photoUrl != null)
-            Glide.with(this).load(user?.photoUrl).into(binding.profileImage)
-        binding.username.text = user?.displayName ?: "User"
-
-//        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-        }
-
-        val listAlbum = listOf(
-            SongAlbumItem(R.drawable.genre, "Album 1"),
-            SongAlbumItem(R.drawable.genre, "Album 2"),
-            SongAlbumItem(R.drawable.genre, "Album 3"),
-            SongAlbumItem(R.drawable.genre, "Album 4")
-        )
-
-        val gridLayoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
-        binding.recyclerViewALLAlbum.layoutManager = gridLayoutManager
-
-        adapter = RecyclerViewAlbumAdapter({ this }, listAlbum, object : RecyclerViewAlbumAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                if (position == 0) {
-                    val intent = Intent(requireContext(), SongActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-        })
-
-        binding.recyclerViewALLAlbum.adapter = adapter
 
         activity?.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -100,12 +121,63 @@ class HomeFragment : Fragment() {
                 return false
             }
         }, viewLifecycleOwner)
-
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setupUserProfile() {
+        // Atur profile picture dan nama user
+        user = Firebase.auth.currentUser
+
+        if (user?.photoUrl != null)
+            Glide.with(this).load(user?.photoUrl).into(binding.profileImage)
+        binding.username.text = user?.displayName ?: "User"
+    }
+
+    private fun setupPlaylists() {
+        val gridLayoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
+        binding.recyclerViewPlaylists.layoutManager = gridLayoutManager
+
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid_layout_margin)
+        binding.recyclerViewPlaylists.addItemDecoration(
+            GridSpacingItemDecoration(2, spacingInPixels, true, 0)
+        )
+
+        adapter = RecyclerViewPlaylistsAdapter(
+            { this },
+            emptyList(),
+            object : RecyclerViewPlaylistsAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int, item: Item) {
+                    val intent = Intent(requireContext(), SongActivity::class.java)
+                    homeViewModel.setSelectedPlaylist(item)
+                    startActivity(intent)
+                }
+            },
+            R.layout.playlist_card_components
+        )
+
+        binding.recyclerViewPlaylists.adapter = adapter
+
+        val linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvPlaylistsHorizontal.layoutManager = linearLayoutManager
+
+        val horizontalSpacing = resources.getDimensionPixelSize(R.dimen.page_margin)
+        binding.rvPlaylistsHorizontal.addItemDecoration(
+            HorizontalSpaceItemDecoration(horizontalSpacing)
+        )
+
+        adapter2 = RecyclerViewPlaylistsAdapter(
+            { this },
+            emptyList(),
+            object : RecyclerViewPlaylistsAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int, item: Item) {
+                    val intent = Intent(requireContext(), SongActivity::class.java)
+                    homeViewModel.setSelectedPlaylist(item)
+                    startActivity(intent)
+                }
+            },
+            R.layout.home_item_horizontal_list
+        )
+
+        binding.rvPlaylistsHorizontal.adapter = adapter2
     }
 }

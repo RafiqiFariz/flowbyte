@@ -1,4 +1,4 @@
-package com.flowbyte.ui.libraryPlaylistMusic
+package com.flowbyte.ui.library.playlist_music
 
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flowbyte.R
-import com.flowbyte.adapter.MusicAdapter
-import com.flowbyte.adapter.RecylerNavLibraryAdapter
+import com.flowbyte.adapter.RecyclerNavLibraryAdapter
 import com.flowbyte.data.LibraryMenuItem
-import com.flowbyte.databinding.FragmentLibraryLocalMusicBinding
 import com.flowbyte.databinding.FragmentLibraryPlaylistMusicBinding
-import com.flowbyte.ui.libraryLocalMusic.LibraryLocalMusicFragment
+import com.flowbyte.ui.library.local_music.LibraryLocalMusicFragment
 
 
 class LibraryPlaylistMusicFragment : Fragment() {
@@ -35,7 +33,7 @@ class LibraryPlaylistMusicFragment : Fragment() {
 
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.recylerNavLibrary.layoutManager = linearLayoutManager
-        val adapter = RecylerNavLibraryAdapter(navLibraryMenu) { menuItem ->
+        val adapter = RecyclerNavLibraryAdapter(navLibraryMenu) { menuItem ->
             Log.d("LibraryLocalMusicFragment", "Item clicked: $menuItem")
             handleNavItemClick(menuItem.name)
         }

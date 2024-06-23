@@ -1,4 +1,4 @@
-package com.flowbyte.ui.artistBasedByGenre
+package com.flowbyte.ui.artist_based_by_genre
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.flowbyte.adapter.RecyclerViewArtistAdapter
 import com.flowbyte.data.ListArtist
 import com.flowbyte.data.ListArtistBasedByGenreReponse
-import com.flowbyte.data.ListGenre
 import com.flowbyte.databinding.FragmentArtistBasedByGenreBinding
 import com.flowbyte.service.deezer.ApiClient
 import com.flowbyte.service.deezer.DeezerApiService

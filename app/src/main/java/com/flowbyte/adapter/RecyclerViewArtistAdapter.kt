@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.flowbyte.R
 import com.flowbyte.data.ListArtist
-import com.flowbyte.ui.artistBasedByGenre.ArtistBasedByGenreFragment
+import com.flowbyte.ui.artist_based_by_genre.ArtistBasedByGenreFragment
 
 class RecyclerViewArtistAdapter(
     private val listArtist: List<ListArtist>,

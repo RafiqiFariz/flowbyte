@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.flowbyte.data.LibraryMenuItem
 import com.flowbyte.databinding.NavLibraryBinding
 
-class RecylerNavLibraryAdapter(
+class RecyclerNavLibraryAdapter(
     private val navLibrary: List<LibraryMenuItem>,
     private val onItemClick: (LibraryMenuItem) -> Unit
-) : RecyclerView.Adapter<RecylerNavLibraryAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<RecyclerNavLibraryAdapter.NavLibraryViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MyViewHolder {
+    ): NavLibraryViewHolder {
         val binding = NavLibraryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(binding)
+        return NavLibraryViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NavLibraryViewHolder, position: Int) {
         holder.bind(navLibrary[position])
     }
 
@@ -28,11 +28,12 @@ class RecylerNavLibraryAdapter(
         return navLibrary.size
     }
 
-    inner class MyViewHolder(private val binding: NavLibraryBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class NavLibraryViewHolder(private val binding: NavLibraryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(libraryMenuItem: LibraryMenuItem) {
             binding.buttonNavLibrary.text = libraryMenuItem.name
             binding.buttonNavLibrary.setOnClickListener {
-                Log.d("RecylerNavLibraryAdapter", "Item clicked: ${libraryMenuItem})")
+                Log.d("RecyclerNavLibraryAdapter", "Item clicked: ${libraryMenuItem})")
                 onItemClick(libraryMenuItem)
             }
         }

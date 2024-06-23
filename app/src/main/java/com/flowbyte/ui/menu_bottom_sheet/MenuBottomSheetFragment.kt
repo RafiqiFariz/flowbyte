@@ -1,6 +1,5 @@
 package com.flowbyte.ui.menu_bottom_sheet
 
-import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
