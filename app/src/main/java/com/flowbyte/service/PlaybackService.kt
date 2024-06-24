@@ -1,6 +1,8 @@
 package com.flowbyte.service
 
 import android.content.Intent
+import android.os.Binder
+import android.os.IBinder
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -12,21 +14,19 @@ import androidx.media3.session.MediaSessionService
 
 class PlaybackService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
+    private val binder = LocalBinder()
 
-    override fun onCreate() {
-        super.onCreate()
-        initializeSessionAndPlayer(
-            "https://github.com/dicodingacademy/assets/raw/main/android_intermediate_academy/bensound_ukulele.mp3",
-            "Ukulele",
-            "Unknown"
-        )
+    override fun onBind(intent: Intent?): IBinder {
+        super.onBind(intent)
+        return binder
+    }
+
+    inner class LocalBinder : Binder() {
+        fun getService(): PlaybackService = this@PlaybackService
     }
 
     @OptIn(UnstableApi::class)
-    private fun initializeSessionAndPlayer(songUri: String, songName: String, songArtist: String) {
-        Log.d("PlaybackService1", "initializeSessionAndPlayer: $songUri")
-        Log.d("PlaybackService2", "initializeSessionAndPlayer: $songName")
-        Log.d("PlaybackService3", "initializeSessionAndPlayer: $songArtist")
+    fun initializeSessionAndPlayer(songUri: String, songName: String, songArtist: String) {
         val audioItem = MediaItem.Builder()
             .setUri(songUri)
             .setMediaMetadata(
@@ -43,18 +43,20 @@ class PlaybackService : MediaSessionService() {
         }
 
         mediaSession = MediaSession.Builder(this, player).build()
+        Log.d("Test Bro", mediaSession.toString())
+        Log.d("Test Bro 2", mediaSession?.token.toString())
     }
 
-//    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-//        super.onStartCommand(intent, flags, startId)
-//        val songUri = intent?.getStringExtra("song_uri")
-//        val songName = intent?.getStringExtra("song_name")
-//        val songArtist = intent?.getStringExtra("song_artist")
-//        if (songUri != null && songName != null && songArtist != null) {
-//            initializeSessionAndPlayer(songUri, songName, songArtist)
-//        }
-//        return START_STICKY
-//    }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
+        val songUri = intent?.getStringExtra("song_uri")
+        val songName = intent?.getStringExtra("song_name")
+        val songArtist = intent?.getStringExtra("song_artist")
+        if (songUri != null && songName != null && songArtist != null) {
+            initializeSessionAndPlayer(songUri, songName, songArtist)
+        }
+        return START_STICKY
+    }
 
     // The user dismissed the app from the recent tasks
     override fun onTaskRemoved(rootIntent: Intent?) {

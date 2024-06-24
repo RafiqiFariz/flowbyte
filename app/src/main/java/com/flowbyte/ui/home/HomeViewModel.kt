@@ -49,11 +49,4 @@ class HomeViewModel @Inject constructor(
             _playlists.value = playlistRepository.getFeaturedPlaylists(limit, offset)
         }
     }
-
-    val selectedPlaylist: LiveData<Item>
-        get() = _selectedPlaylist
-
-    fun setSelectedPlaylist(item: Item) {
-        _selectedPlaylist.value = item
-    }
 }

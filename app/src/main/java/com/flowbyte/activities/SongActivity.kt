@@ -2,9 +2,10 @@ package com.flowbyte.activities
 
 import android.content.ComponentName
 import android.content.Intent
-import android.net.Uri
+import android.content.ServiceConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -14,13 +15,10 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.flowbyte.R
-import com.flowbyte.data.models.playlist.Item
 import com.flowbyte.databinding.ActivitySongBinding
 import com.flowbyte.service.PlaybackService
 import com.flowbyte.ui.home.HomeViewModel
@@ -33,11 +31,27 @@ import dagger.hilt.android.AndroidEntryPoint
 class SongActivity : AppCompatActivity() {
     private lateinit var _binding: ActivitySongBinding
     private lateinit var _controllerFuture: ListenableFuture<MediaController>
-    private lateinit var exoPlayer: ExoPlayer
     private lateinit var songUri: String
     private lateinit var songTitle: String
     private lateinit var songArtist: String
     private lateinit var homeViewModel: HomeViewModel
+    private var playbackService: PlaybackService? = null
+    private var isBound = false
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as PlaybackService.LocalBinder
+            playbackService = binder.getService()
+            isBound = true
+
+            // Initialize session and player with song data
+            playbackService?.initializeSessionAndPlayer(songUri, songTitle, songArtist)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isBound = false
+        }
+    }
 
     @OptIn(UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,14 +61,9 @@ class SongActivity : AppCompatActivity() {
 
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        songTitle = "Unknown Title"
-        songArtist = "Unknown Artist"
-
-//        homeViewModel.selectedPlaylist.observe(this) { selectedPlaylist ->
-//            Log.d("Selected Playlist: ", selectedPlaylist.toString())
-//            songTitle = selectedPlaylist.tracks.href
-//            songArtist = selectedPlaylist.tracks.href
-//        }
+        songTitle = intent.getStringExtra("song_title")!!
+        songArtist = intent.getStringExtra("song_artists")!!
+        songUri = intent.getStringExtra("song_uri")!!
 
         val textView = findViewById<View>(R.id.textView) as TextView
         textView.text = songTitle
@@ -62,12 +71,10 @@ class SongActivity : AppCompatActivity() {
         val artistNameTextView = findViewById<View>(R.id.artistName) as TextView
         artistNameTextView.text = songArtist
 
-//        // Get song URI from intent
-//        songUri = intent.getStringExtra("song_uri") ?: return
-//        songTitle = intent.getStringExtra("song_name")!!
-//        songArtist = intent.getStringExtra("song_artist")!!
-//
-//        // Start PlaybackService with the song URI
+        // Bind ke PlaybackService
+        val playbackServiceIntent = Intent(this, PlaybackService::class.java)
+        bindService(playbackServiceIntent, connection, BIND_AUTO_CREATE)
+
 //        val playbackServiceIntent = Intent(this, PlaybackService::class.java).apply {
 //            putExtra("song_uri", songUri)
 //            putExtra("song_name", songTitle)
@@ -104,6 +111,11 @@ class SongActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         MediaController.releaseFuture(_controllerFuture)
+
+        if (isBound) {
+            unbindService(connection)
+            isBound = false
+        }
     }
 
     private fun hideSystemUI() {
