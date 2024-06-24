@@ -1,8 +1,6 @@
 package com.flowbyte.service
 
 import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -14,16 +12,6 @@ import androidx.media3.session.MediaSessionService
 
 class PlaybackService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
-    private val binder = LocalBinder()
-
-    override fun onBind(intent: Intent?): IBinder {
-        super.onBind(intent)
-        return binder
-    }
-
-    inner class LocalBinder : Binder() {
-        fun getService(): PlaybackService = this@PlaybackService
-    }
 
     @OptIn(UnstableApi::class)
     fun initializeSessionAndPlayer(songUri: String, songName: String, songArtist: String) {
