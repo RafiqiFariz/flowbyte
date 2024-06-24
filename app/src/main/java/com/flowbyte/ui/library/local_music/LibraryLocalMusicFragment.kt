@@ -5,6 +5,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -89,31 +90,58 @@ class LibraryLocalMusicFragment : Fragment() {
     }
 
     private fun getAllMp3Files(): List<AudioFile> {
-        val audioList = mutableListOf<AudioFile>()
+        val audioList: MutableList<AudioFile> = mutableListOf()
+        Log.d("LibraryLocalMusicFragment", "Fetching all MP3 files")
 
-        val contentResolver: ContentResolver = requireActivity().contentResolver
-        val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(
-            MediaStore.Audio.Media._ID,
-            MediaStore.Audio.Media.TITLE,
-            MediaStore.Audio.Media.ARTIST
-        )
-        val selection = "${MediaStore.Audio.Media.MIME_TYPE}=?"
-        val selectionArgs = arrayOf("audio/mpeg")
-        val cursor: Cursor? = contentResolver.query(uri, projection, selection, selectionArgs, null)
-        cursor?.use {
-            val idColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-            val titleColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-            val artistColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-            while (it.moveToNext()) {
-                val id = it.getLong(idColumn)
-                val title = it.getString(titleColumn)
-                val artist = it.getString(artistColumn)
-                val contentUri = Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id.toString())
-                audioList.add(AudioFile(contentUri, title, artist))
+        // Helper function to query the MediaStore and add results to the list
+        fun queryMediaStore(uri: Uri, folderPath: String? = null) {
+            val contentResolver: ContentResolver = requireActivity().contentResolver
+            val projection: Array<String> = arrayOf(
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DATA // Add DATA to get the file path
+            )
+            val selection: String? = if (folderPath != null) {
+                "${MediaStore.Audio.Media.IS_MUSIC}!=0 AND ${MediaStore.Audio.Media.DATA} LIKE ?"
+            } else {
+                "${MediaStore.Audio.Media.IS_MUSIC}!=0"
             }
+            val selectionArgs: Array<String>? = if (folderPath != null) {
+                arrayOf("%$folderPath%")
+            } else {
+                null
+            }
+            val cursor: Cursor? = contentResolver.query(uri, projection, selection, selectionArgs, null)
+            cursor?.use {
+                val idColumn: Int = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val titleColumn: Int = it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+                val artistColumn: Int = it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+                val dataColumn: Int = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA) // File path
+
+                while (it.moveToNext()) {
+                    val id: Long = it.getLong(idColumn)
+                    val title: String = it.getString(titleColumn)
+                    val artist: String = it.getString(artistColumn)
+                    val data: String = it.getString(dataColumn)
+
+                    Log.d("LibraryLocalMusicFragment", "Found file: $data")
+
+                    val contentUri: Uri = Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id.toString())
+                    audioList.add(AudioFile(contentUri, title, artist))
+                }
+            } ?: Log.d("LibraryLocalMusicFragment", "Cursor is null for URI: $uri")
         }
-        Log.d("data", audioList.toString())
+
+        // Query both external and internal storage
+        queryMediaStore(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
+        queryMediaStore(MediaStore.Audio.Media.INTERNAL_CONTENT_URI)
+
+        // Explicitly query the Downloads folder
+        val downloadsPath: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path
+        queryMediaStore(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, downloadsPath)
+
+        Log.d("LibraryLocalMusicFragment", "Fetched ${audioList.size} MP3 files")
         return audioList
     }
 
