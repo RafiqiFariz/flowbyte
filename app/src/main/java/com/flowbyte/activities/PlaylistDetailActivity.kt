@@ -28,6 +28,7 @@ class PlaylistDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlist_detail)
 
+
         firestore = FirebaseFirestore.getInstance()
 
         playlistName = intent.getStringExtra("playlist_name")
