@@ -2,12 +2,14 @@ package com.flowbyte.di
 
 import com.flowbyte.data.repositories.AlbumRepositoryImpl
 import com.flowbyte.data.repositories.AuthRepositoryImpl
+import com.flowbyte.data.repositories.GenreRepositoryImpl
 import com.flowbyte.data.repositories.PlaylistRepositoryImpl
 import com.flowbyte.data.repositories.SearchRepositoryImpl
 import com.flowbyte.data.repositories.TrackRepositoryImpl
 import com.flowbyte.data.repositories.UserRepositoryImpl
 import com.flowbyte.domain.repositories.AlbumRepository
 import com.flowbyte.domain.repositories.AuthRepository
+import com.flowbyte.domain.repositories.GenreRepository
 import com.flowbyte.domain.repositories.PlaylistRepository
 import com.flowbyte.domain.repositories.TrackRepository
 import com.flowbyte.domain.repositories.UserRepository
@@ -45,6 +47,11 @@ abstract class RepositoryModule {
     abstract fun bindPlaylistRepository(
         playlistRepositoryImpl: PlaylistRepositoryImpl
     ): PlaylistRepository
+
+    @Binds
+    abstract fun bindGenreRepository(
+        genreRepositoryImpl: GenreRepositoryImpl
+    ): GenreRepository
 
     @Binds
     abstract fun bindAuthRepository(

@@ -46,7 +46,7 @@ class RecyclerViewPlaylistsAdapter(
             .into(holder.imgCover)
 
         holder.cardView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, playlists[position].name, Toast.LENGTH_LONG).show()
+//            Toast.makeText(holder.itemView.context, playlists[position].name, Toast.LENGTH_LONG).show()
             itemClickListener.onItemClick(position, item)
         }
 

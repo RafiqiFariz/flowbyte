@@ -2,6 +2,7 @@ package com.flowbyte.di
 
 import com.flowbyte.data.remote.AlbumApi
 import com.flowbyte.data.remote.AuthApi
+import com.flowbyte.data.remote.GenreApi
 import com.flowbyte.data.remote.PlaylistApi
 import com.flowbyte.data.remote.SearchApi
 import com.flowbyte.data.remote.TrackApi
@@ -35,6 +36,10 @@ class ApiModule {
     @Provides
     fun providePlaylistApi(@Named("retrofit") retrofit: Retrofit): PlaylistApi =
         retrofit.create(PlaylistApi::class.java)
+
+    @Provides
+    fun provideGenreApi(@Named("retrofit") retrofit: Retrofit): GenreApi =
+        retrofit.create(GenreApi::class.java)
 
     @Provides
     fun provideAuthApi(@Named("auth_retrofit") retrofit: Retrofit): AuthApi =

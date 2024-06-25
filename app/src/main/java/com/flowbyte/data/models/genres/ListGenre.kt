@@ -1,8 +1,9 @@
-package com.flowbyte.data
+package com.flowbyte.data.models.genres
 
 data class GenreResponse(
-    val data: List<ListGenre>
+    val genres: List<String>
 )
+
 data class ListGenre(
     val id: Int,
     val name: String,

@@ -102,16 +102,8 @@ class LibraryLocalMusicFragment : Fragment() {
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.DATA // Add DATA to get the file path
             )
-            val selection: String? = if (folderPath != null) {
-                "${MediaStore.Audio.Media.IS_MUSIC}!=0 AND ${MediaStore.Audio.Media.DATA} LIKE ?"
-            } else {
-                "${MediaStore.Audio.Media.IS_MUSIC}!=0"
-            }
-            val selectionArgs: Array<String>? = if (folderPath != null) {
-                arrayOf("%$folderPath%")
-            } else {
-                null
-            }
+            val selection = "${MediaStore.Audio.Media.MIME_TYPE}=?"
+            val selectionArgs = arrayOf("audio/mpeg")
             val cursor: Cursor? = contentResolver.query(uri, projection, selection, selectionArgs, null)
             cursor?.use {
                 val idColumn: Int = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)

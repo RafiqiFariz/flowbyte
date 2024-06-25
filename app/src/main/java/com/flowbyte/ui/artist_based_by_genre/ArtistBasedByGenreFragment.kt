@@ -11,11 +11,13 @@ import com.flowbyte.data.ListArtist
 import com.flowbyte.data.ListArtistBasedByGenreReponse
 import com.flowbyte.databinding.FragmentArtistBasedByGenreBinding
 import com.flowbyte.service.deezer.ApiClient
-import com.flowbyte.service.deezer.DeezerApiService
+import com.flowbyte.data.remote.GenreApi
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@AndroidEntryPoint
 class ArtistBasedByGenreFragment : Fragment() {
 
     private var _binding: FragmentArtistBasedByGenreBinding? = null
@@ -23,12 +25,12 @@ class ArtistBasedByGenreFragment : Fragment() {
 
     private var genreID: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            genreID = it.getInt(ARG_GENRE_ID)
-        }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        arguments?.let {
+//            genreID = it.getInt(ARG_GENRE_ID)
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,36 +40,36 @@ class ArtistBasedByGenreFragment : Fragment() {
         val root: View = binding.root
 
         // Set up RecyclerView
-        binding.recyclerViewALLArtists.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
+//        binding.recyclerViewALLArtists.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
 //        adapter = RecyclerViewArtistAdapter(ListArtist)
 //
 //        binding.recyclerViewALLArtists.adapter = adapter
 
-        fetchArtists()
+//        fetchArtists()
 
         return root
     }
 
     private fun fetchArtists() {
-        val apiService = ApiClient.retrofit.create(DeezerApiService::class.java)
-        val call = apiService.getArtistByGenre()
+//        val apiService = ApiClient.retrofit.create(GenreApi::class.java)
+//        val call = apiService.getArtistByGenre()
 
-        call.enqueue(object : Callback<ListArtistBasedByGenreReponse> {
-            override fun onResponse(call: Call<ListArtistBasedByGenreReponse>, response: Response<ListArtistBasedByGenreReponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        val artist = it.data
-
-                        // Update UI with fetched genres
-                        updateRecyclerViews(artist)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<ListArtistBasedByGenreReponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-        })
+//        call.enqueue(object : Callback<ListArtistBasedByGenreReponse> {
+//            override fun onResponse(call: Call<ListArtistBasedByGenreReponse>, response: Response<ListArtistBasedByGenreReponse>) {
+//                if (response.isSuccessful) {
+//                    response.body()?.let {
+//                        val artist = it.data
+//
+//                        // Update UI with fetched genres
+//                        updateRecyclerViews(artist)
+//                    }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ListArtistBasedByGenreReponse>, t: Throwable) {
+//                TODO("Not yet implemented")
+//            }
+//        })
     }
 
     private fun updateRecyclerViews(artist: List<ListArtist>) {

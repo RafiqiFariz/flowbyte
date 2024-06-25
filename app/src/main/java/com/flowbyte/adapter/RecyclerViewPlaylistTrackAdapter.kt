@@ -50,7 +50,7 @@ class RecyclerViewPlaylistTrackAdapter(
             .into(holder.trackImage)
 
         holder.track.setOnClickListener {
-            Toast.makeText(holder.itemView.context, albumName, Toast.LENGTH_LONG).show()
+//            Toast.makeText(holder.itemView.context, albumName, Toast.LENGTH_LONG).show()
             itemClickListener.onItemClick(position, item)
         }
 

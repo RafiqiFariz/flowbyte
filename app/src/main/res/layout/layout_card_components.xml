@@ -4,15 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="80dp"
     android:id="@+id/cardView"
-    android:layout_margin="10dp"
     app:cardCornerRadius="12dp"
     android:backgroundTint="#4A558F">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="80dp"
         android:layout_gravity="end"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -22,26 +21,27 @@
             android:id="@+id/cardText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="21sp"
             android:text="Kpop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:translationZ="1dp" />
-
-        <ImageView
-            android:id="@+id/imageCard"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginEnd="-10dp"
-            android:rotation="45"
-            android:scaleType="centerCrop"
-            android:src="@drawable/genre"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:translationZ="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.7" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageCard"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="110dp"-->
+<!--            android:layout_marginTop="45dp"-->
+<!--            android:layout_marginEnd="-10dp"-->
+<!--            android:rotation="45"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:src="@drawable/genre"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.7" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
